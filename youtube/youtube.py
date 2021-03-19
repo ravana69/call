@@ -1,9 +1,6 @@
-from os import path
-
 from youtube_dl import YoutubeDL
-
 from config import DURATION_LIMIT
-from helpers.errors import DurationLimitError
+
 
 ydl_opts = {
     "format": "bestaudio/best",
@@ -12,6 +9,10 @@ ydl_opts = {
     "outtmpl": "downloads/%(id)s.%(ext)s",
 }
 ydl = YoutubeDL(ydl_opts)
+
+
+class DurationLimitError(Exception):
+    pass
 
 
 def download(url: str) -> str:
@@ -24,4 +25,4 @@ def download(url: str) -> str:
         )
 
     ydl.download([url])
-    return path.join("downloads", f"{info['id']}.{info['ext']}")
+    return f"downloads/{info['id']}.{info['ext']}"
